@@ -28,7 +28,7 @@
                 <h1 v-text="product.title"></h1>
                 <p v-html="product.description"></p>
                 <p class="price">
-                    {{ $filters.formatPrice(product.price) }}
+                    {{ formatPrice }}
                 </p>
             </div>
         </div>
@@ -39,13 +39,12 @@
 </body>
 
 <script type="module">
-    import {createApp, onMounted} from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
-    const APP_LOG_LIFECYCLE_EVENTS = true;
+    import {createApp} from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
 
     const app = createApp({
         data() {
             return {
-                sitename: "Vue.js Pet Depot",
+                sitename :"Vue.js Pet Depot",
                 product: {
                     id: 1001,
                     title: "Cat Food, 25lb bag",
@@ -54,78 +53,31 @@
                     image: "assets/images/product-fullsize.png",
                 },
             }
-        }
-    })
-
-    app.config.globalProperties.$filters = {
-        formatPrice(price) {	//#B
-            if (!parseInt(price)) {
-                return "";
-            }	//#C
-            if (price > 99999) {	//#D
-                var priceString = (price / 100).toFixed(2);	//#E
-                var priceArray = priceString.split("").reverse();	//#F
-                var index = 3;	//#F
-                while (priceArray.length > index + 3) {	//#F
-                    priceArray.splice(index + 3, 0, ",");	//#F
-                    index += 4;	//#F
-                }	//#F
-                return "$" + priceArray.reverse().join("");	//#G
-            } else {
-                return "$" + (price / 100).toFixed(2);	//#H
+        },
+        mounted() {
+            console.log(`The initial count is ${this.count}.`)
+        },
+        computed: {
+            formatPrice() {	//#B
+                if (!parseInt(this.product.price)) {
+                    return "";
+                }	//#C
+                if (this.product.price > 99999) {	//#D
+                    const priceString = (this.product.price / 100).toFixed(2);	//#E
+                    const priceArray = priceString.split("").reverse();	//#F
+                    let index = 3;	//#F
+                    while (priceArray.length > index + 3) {	//#F
+                        priceArray.splice(index + 3, 0, ",");	//#F
+                        index += 4;	//#F
+                    }	//#F
+                    return "$" + priceArray.reverse().join("");	//#G
+                } else {
+                    return "$" + (this.product.price / 100).toFixed(2);	//#H
+                }
             }
-        }
-    }
-
-    onMounted(() => {
-        if (APP_LOG_LIFECYCLE_EVENTS) {	//#E
-            console.log(" mounted"); 	//#E
-        }
+        },
     })
-    /*
-    var webstore = new Vue({
 
-      beforeCreate: function () {	//#B
-        if (APP_LOG_LIFECYCLE_EVENTS) {	//#B
-          console.log("beforeCreate");	//#B
-        }	//#B
-      },	//#B
-      created: function () {	//#C
-        if (APP_LOG_LIFECYCLE_EVENTS) {	//#C
-          console.log("created");	//#C
-        }	//#C
-      },	//#C
-      beforeMount: function () {	//#D
-        if (APP_LOG_LIFECYCLE_EVENTS) {	//#D
-          console.log(" beforeMount");	//#D
-        }	//#D
-      },	//#D
-      mounted: function () {	//#E
-      //#E
-      },	//#E
-      beforeUpdate: function () { 	//#F
-        if (APP_LOG_LIFECYCLE_EVENTS) { 	//#F
-          console.log("beforeUpdate"); 	//#F
-        } 	//#F
-      },	//#F
-      updated: function () { 	//#G
-        if (APP_LOG_LIFECYCLE_EVENTS) { 	//#G
-          console.log("updated"); 	//#G
-        } 	//#G
-      },	//#G
-      beforeDestroy: function () { 	//#H
-        if (APP_LOG_LIFECYCLE_EVENTS) { 	//#H
-          console.log("beforeDestroy "); 	//#H
-        } 	//#H
-      },	//#H
-      destroyed: function () { 	//#I
-        if (APP_LOG_LIFECYCLE_EVENTS) { 	//#I
-          console.log("destroyed"); 	//#I
-        } 	//#I
-      }	//#I
-
-    });
-  */
     app.mount('#app')
 </script>
 </body>
