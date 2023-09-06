@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {reactive, computed, ref} from 'vue'
+import {ref} from 'vue'
 
 const sitename = 'Vue.js Pet Depot'
 

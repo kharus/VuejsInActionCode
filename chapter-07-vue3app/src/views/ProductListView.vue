@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import {reactive, computed, ref} from 'vue'
 import axios from 'axios'
-import ProductHeader from './ProductHeader.vue'
+import ProductHeader from '@/components/ProductHeader.vue'
 
 const showProduct = ref(true)
-
-interface Product {
-  id: number,
-  title: string,
-  description: string,
-  price: number,
-  image: string,
-  availableInventory: number,
-  rating: number
-}
 
 const order = ref({
   firstName: '',
@@ -50,14 +40,6 @@ function addToCart(aProduct: Product) {
   cart.push(aProduct.id);
 }
 
-function showCheckout() {
-  showProduct.value = !showProduct.value;
-}
-
-function submitForm() {
-  alert('Submitted');
-}
-
 function canAddToCart(aProduct: Product) {
   return aProduct.availableInventory > cartCount(aProduct.id);
 }
@@ -74,16 +56,16 @@ function cartCount(id: number) {
 
 function formatPrice(productPrice: number) {
   if (productPrice > 99999) {
-    const priceString = (productPrice / 100).toFixed(2) //#E
-    const priceArray = priceString.split('').reverse() //#F
-    let index = 3 //#F
+    const priceString = (productPrice / 100).toFixed(2)
+    const priceArray = priceString.split('').reverse()
+    let index = 3
     while (priceArray.length > index + 3) {
-      priceArray.splice(index + 3, 0, ',') //#F
+      priceArray.splice(index + 3, 0, ',')
       index += 4
     }
-    return '$' + priceArray.reverse().join('') //#G
+    return '$' + priceArray.reverse().join('')
   } else {
-    return '$' + (productPrice / 100).toFixed(2) //#H
+    return '$' + (productPrice / 100).toFixed(2)
   }
 }
 
@@ -122,7 +104,7 @@ const sortedProducts = computed(() => {
               </figure>
             </div>
             <div class="col-md-6 col-md-offset-0 description">
-              <h1 v-text="product.title"></h1>
+              <router-link tag="h1" :to="{ name : 'Id', params: {id: product.id}}" >{{product.title}}</router-link>
               <p v-html="product.description"></p>
               <p class="price">
                 {{ formatPrice(product.price) }}
