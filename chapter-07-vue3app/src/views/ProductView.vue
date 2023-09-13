@@ -15,10 +15,14 @@ axios.get('/products.json')
       product.value.image = '/' + product.value.image;
     });
 
+function edit() {
+  router.push({name: 'Edit'})
+}
+
 </script>
 
 <template>
-  <product-header></product-header>
+  <ProductHeader/>
   <h1> This is the id {{ route.params.id }}</h1>
   <div class="row">
     <div class="col-md-5 col-md-offset-0">
@@ -32,8 +36,8 @@ axios.get('/products.json')
       <p class="price">
         {{ product.price }}
       </p>
-<!--      <button @click="edit">Edit Product</button>-->
-      <router-view></router-view>
+      <button @click="edit">Edit Product</button>
+      <RouterView/>
     </div>
   </div>
 
